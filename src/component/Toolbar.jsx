@@ -142,8 +142,8 @@
             <option value="Roboto">Roboto</option>
         </select>
 
-        <button style={{ backgroundColor: isBold ? "blue" : "" }} onClick={handleBoldClick}>Bold</button>
-        <button style={{ backgroundColor: isItalic ? "blue" : "" }} onClick={handleItalicClick}>Italic</button>
+        <button style={{ backgroundColor: isBold ? "blue" : "" }} onClick={handleBoldClick}>B</button>
+        <button style={{ backgroundColor: isItalic ? "blue" : "" }} onClick={handleItalicClick}>𝐼</button>
 
         {/* Color selection */}
         <select onChange={(e) => onColorChange(e.target.value)}>

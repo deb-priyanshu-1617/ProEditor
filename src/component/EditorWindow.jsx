@@ -1,9 +1,19 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef,useRef,useImperativeHandle,useEffect} from "react";
 
 const EditorWindow = forwardRef(({ text, onChange }, ref) => {
+  const internalRef = useRef(null);
+   // Expose internalRef to parent via forwarded ref
+  useImperativeHandle(ref, () => internalRef.current);
+
+  useEffect(() => {
+    if (internalRef.current) {
+      internalRef.current.innerHTML = text;
+    }
+  }, []);
+
   return (
     <div
-      ref={ref}
+      ref={internalRef}
       className="window"
       contentEditable={true}
       suppressContentEditableWarning={true}
@@ -12,9 +22,9 @@ const EditorWindow = forwardRef(({ text, onChange }, ref) => {
         borderRadius: "4px",
         padding: "10px",
         minHeight: "500px",
-        backgroundColor: "#f9f9f9",
-        color: "black",
-        width: "1110px",
+        backgroundColor: "#000000ff",
+        color: "white",
+        width: "1230px",
         textAlign: "left",
         verticalAlign: "top",
         display: "block",
@@ -22,11 +32,10 @@ const EditorWindow = forwardRef(({ text, onChange }, ref) => {
       }}
       onInput={(e) => {
         if (onChange) {
-          onChange(e.target.innerHTML);
+          onChange(e.currentTarget.innerHTML);
         }
       }}
     >
-      {text}
     </div>
   );
 });

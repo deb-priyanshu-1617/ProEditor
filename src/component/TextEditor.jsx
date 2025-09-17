@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState,useRef} from "react";
 import EditorWindow from "./EditorWindow";
 import Toolbar from "./Toolbar";
+
 
 // Existing handlers
 function handleBold() {
@@ -25,7 +26,7 @@ function handleUnderline() {
 
 // ✅ New handlers
 function handleHighLight() {
-  document.execCommand("hiliteColor", false, "yellow");
+  document.execCommand("hiliteColor", false, "green");
 }
 
 function handleSuperscript() {
@@ -62,9 +63,22 @@ function handleInsertOrderedList() {
 
 export default function TextEditor() {
   const [content, setContent] = useState("Start Typing here...");
-
+  
+  const editorRef = useRef(null);
   function handleChange(newValue) {
     setContent(newValue);
+  }
+
+  function handleDownload(){
+
+    const editorContent = editorRef.current.innerText;  // Get live content
+    const element = document.createElement("a");
+    const file =new Blob([editorContent],{type: "text/plain"});
+    element.href = URL.createObjectURL(file);
+    element.download = "document.txt";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   }
 
   return (
@@ -85,7 +99,10 @@ export default function TextEditor() {
         onInsertUnorderedList={handleInsertUnorderedList}
         onInsertOrderedList={handleInsertOrderedList}
       />
-      <EditorWindow text={content} onInput={handleChange} />
+      <button onClick={handleDownload} style={{ margin: "10px 0" }}>
+        Download as TXT
+      </button>
+      <EditorWindow ref={editorRef} text={content} onChange={handleChange} />
 
     </div>
   );
